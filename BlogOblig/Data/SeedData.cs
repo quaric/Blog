@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -85,22 +86,27 @@ namespace BlogOblig.Data
             return IR;
         }
 
-        public static void SeedDB(ApplicationDbContext context, ApplicationUser user)
+        public static async Task SeedDB(ApplicationDbContext context, ApplicationUser user)
         {
             if (context.Blogs.Any())
             {
                 return; // DB has been seeded
             }
-          
-            Blog blog = new Blog
+            Debug.WriteLine("DSADASDSA" + user.UserName);
+            Blog blog = new Blog()
             {
-                Owner = user,
-                Name = "SeedBLog",
-                Description = "Blogg via Seed",
+                Name ="blog.Name",
+                Description = "blog.Description",
                 Created = DateTime.Now,
                 Modified = DateTime.Now,
-                Status = Blog.BlogStatus.Open
+                Owner = context.Users.First(x=>x.UserName == "admin@admin.com")
             };
+            context.Blogs.Add(blog);
+            context.SaveChanges();
+            user.Subscriptions = new List<Blog>();
+            user.Subscriptions.Add(blog);
+            context.SaveChanges();
+            
             Post post = new Post
             {
                 Title = "EnPost",
@@ -111,14 +117,15 @@ namespace BlogOblig.Data
                 ParentBlog = blog
             };
 
-            context.Blogs.Add(blog);
             context.Posts.Add(post);
+            context.SaveChanges();
+
             context.Comments.Add(new Comment
             {
                 Created = DateTime.Now, Modified = DateTime.Now, Name = "Hei", Text = "En kommentartekst her",
                 Owner = user, ParentPost = post
             });
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

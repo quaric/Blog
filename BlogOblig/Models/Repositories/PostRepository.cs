@@ -53,17 +53,20 @@ namespace BlogOblig.Models
    
         public async Task Add(IPrincipal p, PostEditViewModel viewModel)
         {
+
+            Blog blog = _context.Blogs.Include(x=>x.Posts).First(x => x.BlogId == viewModel.ParentBlogId);
             Post post = new Post
             {
                 Title = viewModel.Title,
                 Text = viewModel.Text,
-                ParentBlog = _context.Blogs.First(x => x.BlogId == viewModel.ParentBlogId),
+                ParentBlog = blog,
                 Owner = await _userManager.FindByNameAsync(p.Identity.Name),
                 Created = DateTime.Now,
                 Modified = DateTime.Now
             };
 
             await _context.AddAsync(post);
+            blog.Posts.Add(post);
             await _context.SaveChangesAsync();
         }
 

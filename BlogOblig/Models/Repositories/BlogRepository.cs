@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Mime;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using BlogOblig.Data;
@@ -31,11 +32,44 @@ namespace BlogOblig.Models
             return blogs;
         }
 
+        public async Task<List<SubscriptionViewModel>> GetBlogSubscriptions(IPrincipal principal)
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(principal.Identity.Name);
+            ApplicationUser userWithSubscriptions = await _context.Users.Include(x => x.Subscriptions).ThenInclude(x=>x.Posts).ThenInclude(x=>x.Comments).FirstAsync(x => x.Id == user.Id);
+            IEnumerable<Blog> subscriptions = userWithSubscriptions.Subscriptions;
+            List<SubscriptionViewModel> subscriptionViewModels = new List<SubscriptionViewModel>();
+            foreach(Blog b in subscriptions)
+            {
+                int numberOfComments = 0;
+                DateTime lastActivity = b.Modified;
+                foreach (Post p in b.Posts)
+                {
+                    numberOfComments += p.Comments.Count;
+                    if (p.Modified.CompareTo(lastActivity) > 0) lastActivity = p.Modified;
+                    foreach (Comment c in p.Comments)
+                    {
+                        if (c.Modified.CompareTo(lastActivity) > 0) lastActivity = c.Modified;
+                    }
+                }
+
+                subscriptionViewModels.Add(new SubscriptionViewModel
+                {
+                    Description = b.Description,
+                    Name = b.Name,
+                    NumberOfPosts = b.Posts.Count,
+                    NumberOfComments = numberOfComments,
+                    LastActivity = lastActivity
+                });
+            }
+            return subscriptionViewModels;
+        }
+
         public Blog Get(int id)
         {
             Blog blog =  _context.Blogs.Include(x => x.Owner).First(x=>x.BlogId == id);
             return blog;
         }
+
         public BlogEditViewModel GetBlogEditViewModel()
         {
             BlogEditViewModel viewModel = new BlogEditViewModel();
@@ -55,6 +89,7 @@ namespace BlogOblig.Models
             };
             return viewModel;
         }
+
 
         public async Task Add(IPrincipal principal, Blog blog)
         {
@@ -98,6 +133,23 @@ namespace BlogOblig.Models
                 throw new DBConcurrencyException("Failure when deleting blog");
             }
         }
+
+        public async Task Subscribe(IPrincipal principal, int id)
+        {
+            try
+            {
+                ApplicationUser user = await _userManager.FindByNameAsync(principal.Identity.Name);
+                Blog blog = _context.Blogs.First(x => x.BlogId == id);
+                user.Subscriptions.Add(blog);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Invalid id or user: " + e.ToString());
+            }
+ 
+        }
+
 
 
 

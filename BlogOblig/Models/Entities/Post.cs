@@ -15,6 +15,6 @@ namespace BlogOblig.Models.Entities
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public virtual ApplicationUser Owner { get; set; }
-
+        public virtual List<Comment> Comments { get; set; }
     }
 }

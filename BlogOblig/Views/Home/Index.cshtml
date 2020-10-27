@@ -1,8 +1,62 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<BlogOblig.Models.ViewModel.SubscriptionViewModel>
+
+@{
+    ViewData["Title"] = "My Subscriptions";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>My Subscriptions</h1>
+
+@if (Model == null)
+{
+    <h2>
+        No subscriptions
+    </h2>
+}
+
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfPosts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfComments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastActivity)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfPosts)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfComments)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastActivity)
+                </td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+}

@@ -12,6 +12,7 @@ namespace BlogOblig.Models
     {
         public IEnumerable<Blog> GetAll();
         public Blog Get(int id);
+        public Task<List<SubscriptionViewModel>> GetBlogSubscriptions(IPrincipal principal);
 
         public Task Add(IPrincipal principal, Blog blog);
         public void SaveChanges(Blog blog);
@@ -19,5 +20,6 @@ namespace BlogOblig.Models
         public BlogEditViewModel GetBlogEditViewModel();
         public BlogEditViewModel GetBlogEditViewModel(int id);
 
+        public Task Subscribe(IPrincipal principal, int id);
     }
 }

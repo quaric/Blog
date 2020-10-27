@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogOblig.Controllers;
 using Microsoft.AspNetCore.Identity;
 
 namespace BlogOblig.Models.Entities
@@ -15,6 +16,7 @@ namespace BlogOblig.Models.Entities
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public BlogStatus Status { get; set; }
+        public virtual List<Post> Posts { get; set; }
 
         public enum BlogStatus 
         {
