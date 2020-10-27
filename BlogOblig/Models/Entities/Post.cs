@@ -14,7 +14,7 @@ namespace BlogOblig.Models.Entities
         public virtual Blog ParentBlog { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
-        public virtual IdentityUser Owner { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
 
     }
 }

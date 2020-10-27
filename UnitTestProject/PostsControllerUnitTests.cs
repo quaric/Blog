@@ -26,7 +26,7 @@ namespace UnitTestProject
     {
 
         private Mock<IPostRepository> _mockRepository;
-        private Mock<UserManager<IdentityUser>> _mockUserManager;
+        private Mock<UserManager<ApplicationUser>> _mockUserManager;
         private List<Post> _fakePosts;
         private PostEditViewModel _viewModel;
         private BlogEditViewModel _fakeBlog;
@@ -34,7 +34,7 @@ namespace UnitTestProject
         [TestInitialize]
         public void SetupContext()
         {
-            _mockUserManager = MockHelpers.MockUserManager<IdentityUser>();
+            _mockUserManager = MockHelpers.MockUserManager<ApplicationUser>();
             _mockRepository = new Mock<IPostRepository>();
             _fakePosts = new List<Post>
             {

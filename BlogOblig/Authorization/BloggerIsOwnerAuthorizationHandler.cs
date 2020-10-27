@@ -10,9 +10,9 @@ namespace BlogOblig.Authorization
 {
     public class BloggerIsOwnerAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, BlogEditViewModel>
     {
-        UserManager<IdentityUser> _userManager;
+        UserManager<ApplicationUser> _userManager;
 
-        public BloggerIsOwnerAuthorizationHandler(UserManager<IdentityUser> userManager)
+        public BloggerIsOwnerAuthorizationHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

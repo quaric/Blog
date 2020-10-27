@@ -26,14 +26,14 @@ namespace UnitTestProject
     public class BlogControllerUnitTests
     {
         private Mock<IBlogRepository> _mockRepository;
-        private Mock<UserManager<IdentityUser>> _mockUserManager;
+        private Mock<UserManager<ApplicationUser>> _mockUserManager;
         private List<Blog> _fakeBlogs;
         private BlogEditViewModel _viewModel;
         
         [TestInitialize]
         public void SetupContext()
         {
-            _mockUserManager = MockHelpers.MockUserManager<IdentityUser>();
+            _mockUserManager = MockHelpers.MockUserManager<ApplicationUser>();
             _mockRepository = new Mock<IBlogRepository>();
             _fakeBlogs = new List<Blog>
             {

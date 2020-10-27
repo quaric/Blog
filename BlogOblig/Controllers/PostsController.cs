@@ -18,9 +18,9 @@ namespace BlogOblig.Controllers
     public class PostsController : Controller
     {
         private IPostRepository _repository;
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
         private IAuthorizationService _authorizationService;
-        public PostsController(IPostRepository repository, UserManager<IdentityUser> userManager, IAuthorizationService authorizationService = null)
+        public PostsController(IPostRepository repository, UserManager<ApplicationUser> userManager, IAuthorizationService authorizationService = null)
         {
             _userManager = userManager;
             _repository = repository;

@@ -18,10 +18,10 @@ namespace BlogOblig.Controllers
     public class CommentsController : Controller
     {
         private ICommentRepository _repository;
-        private UserManager<IdentityUser> _userManager;
+        private UserManager<ApplicationUser> _userManager;
         private IAuthorizationService _authorizationService;
 
-        public CommentsController(ICommentRepository repository, UserManager<IdentityUser> userManager, IAuthorizationService authorizationService = null)
+        public CommentsController(ICommentRepository repository, UserManager<ApplicationUser> userManager, IAuthorizationService authorizationService = null)
         {
             _userManager = userManager;
             _repository = repository;

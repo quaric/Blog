@@ -20,7 +20,7 @@ namespace UnitTestProject
     public abstract class BlogRepositoryUnitTests
     {
         private IBlogRepository _repository;
-        private Mock<UserManager<IdentityUser>> _mockUserManager;
+        private Mock<UserManager<ApplicationUser>> _mockUserManager;
 
         protected BlogRepositoryUnitTests(DbContextOptions<ApplicationDbContext> contextOptions)
         {
@@ -32,7 +32,7 @@ namespace UnitTestProject
 
         public void Initialize()
         {
-            _mockUserManager = MockHelpers.MockUserManager<IdentityUser>();
+            _mockUserManager = MockHelpers.MockUserManager<ApplicationUser>();
             using (var context = new ApplicationDbContext(ContextOptions))
             {
                 context.Database.EnsureDeleted();
@@ -42,7 +42,7 @@ namespace UnitTestProject
                     new Blog
                     {
                         Name = "En blog", Description = "En deskripsjon", Created = DateTime.Now,
-                        Modified = DateTime.Now, Owner = new IdentityUser("user"), Status = Blog.BlogStatus.Open
+                        Modified = DateTime.Now, Owner = new ApplicationUser(), Status = Blog.BlogStatus.Open
                     });
                 context.SaveChanges();
             }

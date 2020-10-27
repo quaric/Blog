@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Mime;
+using System.Threading.Tasks;
 using BlogOblig.Authorization;
 using BlogOblig.Models.Entities;
 using BlogOblig.Models.ViewModel;
@@ -10,9 +11,9 @@ namespace BlogOblig.Authorization
 {
     public class CommentIsOwnerAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, CommentsEditViewModel>
     {
-        UserManager<IdentityUser> _userManager;
+        UserManager<ApplicationUser> _userManager;
 
-        public CommentIsOwnerAuthorizationHandler(UserManager<IdentityUser> userManager)
+        public CommentIsOwnerAuthorizationHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

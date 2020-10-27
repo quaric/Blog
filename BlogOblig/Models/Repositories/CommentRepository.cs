@@ -15,9 +15,9 @@ namespace BlogOblig.Models
     public class CommentRepository : ICommentRepository
     {
         private ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentRepository(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+        public CommentRepository(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _context = context;
             _userManager = userManager;

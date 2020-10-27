@@ -10,9 +10,9 @@ namespace BlogOblig.Authorization
 {
     public class PostIsOwnerAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, PostEditViewModel>
     {
-        UserManager<IdentityUser> _userManager;
+        UserManager<ApplicationUser> _userManager;
 
-        public PostIsOwnerAuthorizationHandler(UserManager<IdentityUser> userManager)
+        public PostIsOwnerAuthorizationHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

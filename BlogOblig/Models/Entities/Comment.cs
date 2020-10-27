@@ -13,7 +13,7 @@ namespace BlogOblig.Models.Entities
         public string Name { get; set; }
         public string Text { get; set; }
         public virtual Post ParentPost { get; set; }
-        public virtual IdentityUser Owner { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
     }

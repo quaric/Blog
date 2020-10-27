@@ -18,10 +18,10 @@ namespace BlogOblig.Controllers
     public class BlogsController : Controller
     {
         private IBlogRepository _repository;
-        private UserManager<IdentityUser> _userManager; 
+        private UserManager<ApplicationUser> _userManager; 
         private IAuthorizationService _authorizationService;
 
-        public BlogsController(IBlogRepository repository, UserManager<IdentityUser> userManager, IAuthorizationService authorizationService = null)
+        public BlogsController(IBlogRepository repository, UserManager<ApplicationUser> userManager, IAuthorizationService authorizationService = null)
         {
             _userManager = userManager;
             _repository = repository;
@@ -33,8 +33,7 @@ namespace BlogOblig.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Blog> blogs = _repository.GetAll();
-            var kek = 1;
-            return Ok(blogs);
+            return View(blogs);
         }
 
         // GET: Blogs/Details/5

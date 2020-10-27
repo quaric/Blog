@@ -15,9 +15,9 @@ namespace BlogOblig.Models
     public class PostRepository : IPostRepository
     {
         private ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PostRepository(UserManager<IdentityUser> userManager, ApplicationDbContext context)
+        public PostRepository(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _context = context;
             _userManager = userManager;

@@ -26,8 +26,8 @@ namespace BlogOblig.Data
 
                 var adminID = await EnsureUser(serviceProvider, testUserPw, "admin@admin.com");
                 await EnsureRole(serviceProvider, adminID, Constants.BlogAdministratorsRole);
-                var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
-                IdentityUser user = await userManager.FindByIdAsync(adminID);
+                var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+                ApplicationUser user = await userManager.FindByIdAsync(adminID);
                 SeedDB(context, user);
             }
         }
@@ -35,12 +35,12 @@ namespace BlogOblig.Data
         private static async Task<string> EnsureUser(IServiceProvider serviceProvider, string testUserPw,
             string UserName)
         {
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
             var user = await userManager.FindByNameAsync(UserName);
             if (user == null)
             {
-                user = new IdentityUser
+                user = new ApplicationUser
                 {
                     UserName = UserName,
                     EmailConfirmed = true
@@ -71,7 +71,7 @@ namespace BlogOblig.Data
                 IR = await roleManager.CreateAsync(new IdentityRole(role));
             }
 
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
             var user = await userManager.FindByIdAsync(uid);
 
@@ -85,7 +85,7 @@ namespace BlogOblig.Data
             return IR;
         }
 
-        public static void SeedDB(ApplicationDbContext context, IdentityUser user)
+        public static void SeedDB(ApplicationDbContext context, ApplicationUser user)
         {
             if (context.Blogs.Any())
             {
