@@ -32,7 +32,6 @@ namespace BlogOblig.Models
             return blogs;
         }
 
-        //TODO Bug som gjør at den viser feil subscriptions ?
         public async Task<List<SubscriptionViewModel>> GetBlogSubscriptions(IPrincipal principal)
         {
             var user1 = await _userManager.FindByNameAsync(principal.Identity.Name);
@@ -62,34 +61,7 @@ namespace BlogOblig.Models
                     LastActivity = lastActivity
                 });
             }
-
-            /* ApplicationUser userWithSubscriptions = await _context.ApplicationUsers.Include(x => x.Subscriptions).ThenInclude(x=>x.Posts).ThenInclude(x=>x.Comments).FirstAsync(x => x.Id == user.Id);
-             IEnumerable<Blog> subscriptions = userWithSubscriptions.Subscriptions;
-             List<SubscriptionViewModel> subscriptionViewModels = new List<SubscriptionViewModel>();
-             foreach(Blog b in subscriptions)
-             {
-                 int numberOfComments = 0;
-                 DateTime lastActivity = b.Modified;
-                 foreach (Post p in b.Posts)
-                 {
-                     numberOfComments += p.Comments.Count;
-                     if (p.Modified.CompareTo(lastActivity) > 0) lastActivity = p.Modified;
-                     foreach (Comment c in p.Comments)
-                     {
-                         if (c.Modified.CompareTo(lastActivity) > 0) lastActivity = c.Modified;
-                     }
-                 }
-
-                 subscriptionViewModels.Add(new SubscriptionViewModel
-                 {
-                     Description = b.Description,
-                     Name = b.Name,
-                     NumberOfPosts = b.Posts.Count,
-                     NumberOfComments = numberOfComments,
-                     LastActivity = lastActivity
-                 });
-             }*/
-                return subscriptionViewModels;
+            return subscriptionViewModels;
         }
 
         public Blog Get(int id)
