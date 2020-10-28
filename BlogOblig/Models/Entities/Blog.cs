@@ -17,7 +17,7 @@ namespace BlogOblig.Models.Entities
         public DateTime Modified { get; set; }
         public BlogStatus Status { get; set; }
         public virtual List<Post> Posts { get; set; }
-
+        public ICollection<ApplicationUserBlog> ApplicationUserBlogs { get; set; }
         public enum BlogStatus 
         {
             Open,

@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20201027194630_AddedSubscriptions.cs" />
     <Compile Remove="Data\Migrations\20201027194630_AddedSubscriptions.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201028102437_ChangedSubscriptionsInUserToIcollection.cs" />
+    <Compile Remove="Data\Migrations\20201028102437_ChangedSubscriptionsInUserToIcollection.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201028104719_ChangedSubscriptionsInUserToIcollection.cs" />
+    <Compile Remove="Data\Migrations\20201028104719_ChangedSubscriptionsInUserToIcollection.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201028104842_ChangedSubscriptionsInUserToIcollection.cs" />
+    <Compile Remove="Data\Migrations\20201028104842_ChangedSubscriptionsInUserToIcollection.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +27,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\API\" />
   </ItemGroup>
 
 </Project>

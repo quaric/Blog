@@ -4,14 +4,16 @@ using BlogOblig.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlogOblig.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201028111615_AddedUsersDBset")]
+    partial class AddedUsersDBset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,21 +84,6 @@ namespace BlogOblig.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("BlogOblig.Models.Entities.ApplicationUserBlog", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("BlogId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUserId", "BlogId");
-
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("ApplicationUserBlogs");
                 });
 
             modelBuilder.Entity("BlogOblig.Models.Entities.Blog", b =>
@@ -334,25 +321,10 @@ namespace BlogOblig.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BlogOblig.Models.Entities.ApplicationUserBlog", b =>
-                {
-                    b.HasOne("BlogOblig.Models.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany("ApplicationUserBlogs")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlogOblig.Models.Entities.Blog", "Blog")
-                        .WithMany("ApplicationUserBlogs")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BlogOblig.Models.Entities.Blog", b =>
                 {
                     b.HasOne("BlogOblig.Models.Entities.ApplicationUser", "Owner")
-                        .WithMany()
+                        .WithMany("Subscriptions")
                         .HasForeignKey("OwnerId");
                 });
 

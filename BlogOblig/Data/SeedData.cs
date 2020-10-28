@@ -92,7 +92,8 @@ namespace BlogOblig.Data
             {
                 return; // DB has been seeded
             }
-            Debug.WriteLine("DSADASDSA" + user.UserName);
+
+            ApplicationUser owner = context.Users.First(x => x.UserName == "admin@admin.com");
             Blog blog = new Blog()
             {
                 Name ="blog.Name",
@@ -102,17 +103,19 @@ namespace BlogOblig.Data
                 Owner = context.Users.First(x=>x.UserName == "admin@admin.com")
             };
             context.Blogs.Add(blog);
-            context.SaveChanges();
-            user.Subscriptions = new List<Blog>();
-            user.Subscriptions.Add(blog);
-            context.SaveChanges();
+            ApplicationUserBlog applicationUserBlog = new ApplicationUserBlog
+            {
+                ApplicationUser = owner,
+                Blog = blog,
+            };
+            context.ApplicationUserBlogs.Add(applicationUserBlog);
             
             Post post = new Post
             {
                 Title = "EnPost",
                 Created = DateTime.Now,
                 Modified = DateTime.Now,
-                Owner = user,
+                Owner = owner,
                 Text = "En eksempel tekst her",
                 ParentBlog = blog
             };
@@ -123,7 +126,7 @@ namespace BlogOblig.Data
             context.Comments.Add(new Comment
             {
                 Created = DateTime.Now, Modified = DateTime.Now, Name = "Hei", Text = "En kommentartekst her",
-                Owner = user, ParentPost = post
+                Owner = owner, ParentPost = post
             });
             await context.SaveChangesAsync();
         }

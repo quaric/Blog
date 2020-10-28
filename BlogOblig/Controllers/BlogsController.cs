@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogOblig.Authorization;
@@ -186,5 +188,10 @@ namespace BlogOblig.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task Subscribe(int id)
+        {
+            await _repository.Subscribe(User, id);
+        }
     }
 }

@@ -32,17 +32,18 @@ namespace BlogOblig.Models
             return blogs;
         }
 
+        //TODO Bug som gjør at den viser feil subscriptions ?
         public async Task<List<SubscriptionViewModel>> GetBlogSubscriptions(IPrincipal principal)
         {
-            ApplicationUser user = await _userManager.FindByNameAsync(principal.Identity.Name);
-            ApplicationUser userWithSubscriptions = await _context.Users.Include(x => x.Subscriptions).ThenInclude(x=>x.Posts).ThenInclude(x=>x.Comments).FirstAsync(x => x.Id == user.Id);
-            IEnumerable<Blog> subscriptions = userWithSubscriptions.Subscriptions;
+            var user1 = await _userManager.FindByNameAsync(principal.Identity.Name);
+            var user = await _context.ApplicationUserBlogs.Include(x=>x.Blog).ThenInclude(x=>x.Posts).ThenInclude(z=>z.Comments).Where(x =>
+                x.ApplicationUser == user1).ToListAsync();
             List<SubscriptionViewModel> subscriptionViewModels = new List<SubscriptionViewModel>();
-            foreach(Blog b in subscriptions)
+            foreach (ApplicationUserBlog ab in user)
             {
                 int numberOfComments = 0;
-                DateTime lastActivity = b.Modified;
-                foreach (Post p in b.Posts)
+                DateTime lastActivity = ab.Blog.Modified;
+                foreach (Post p in ab.Blog.Posts)
                 {
                     numberOfComments += p.Comments.Count;
                     if (p.Modified.CompareTo(lastActivity) > 0) lastActivity = p.Modified;
@@ -54,14 +55,41 @@ namespace BlogOblig.Models
 
                 subscriptionViewModels.Add(new SubscriptionViewModel
                 {
-                    Description = b.Description,
-                    Name = b.Name,
-                    NumberOfPosts = b.Posts.Count,
+                    Description = ab.Blog.Description,
+                    Name = ab.Blog.Name,
+                    NumberOfPosts = ab.Blog.Posts.Count,
                     NumberOfComments = numberOfComments,
                     LastActivity = lastActivity
                 });
             }
-            return subscriptionViewModels;
+
+            /* ApplicationUser userWithSubscriptions = await _context.ApplicationUsers.Include(x => x.Subscriptions).ThenInclude(x=>x.Posts).ThenInclude(x=>x.Comments).FirstAsync(x => x.Id == user.Id);
+             IEnumerable<Blog> subscriptions = userWithSubscriptions.Subscriptions;
+             List<SubscriptionViewModel> subscriptionViewModels = new List<SubscriptionViewModel>();
+             foreach(Blog b in subscriptions)
+             {
+                 int numberOfComments = 0;
+                 DateTime lastActivity = b.Modified;
+                 foreach (Post p in b.Posts)
+                 {
+                     numberOfComments += p.Comments.Count;
+                     if (p.Modified.CompareTo(lastActivity) > 0) lastActivity = p.Modified;
+                     foreach (Comment c in p.Comments)
+                     {
+                         if (c.Modified.CompareTo(lastActivity) > 0) lastActivity = c.Modified;
+                     }
+                 }
+
+                 subscriptionViewModels.Add(new SubscriptionViewModel
+                 {
+                     Description = b.Description,
+                     Name = b.Name,
+                     NumberOfPosts = b.Posts.Count,
+                     NumberOfComments = numberOfComments,
+                     LastActivity = lastActivity
+                 });
+             }*/
+                return subscriptionViewModels;
         }
 
         public Blog Get(int id)
@@ -134,13 +162,21 @@ namespace BlogOblig.Models
             }
         }
 
+        
         public async Task Subscribe(IPrincipal principal, int id)
         {
             try
             {
-                ApplicationUser user = await _userManager.FindByNameAsync(principal.Identity.Name);
+                ApplicationUser user = _context.ApplicationUsers.Include(x=>x.ApplicationUserBlogs).First(x=>x.UserName == principal.Identity.Name);
+                ApplicationUserBlog applicationUserBlog = _context.ApplicationUserBlogs.FirstOrDefault(x => x.BlogId == id);
+                if (user.ApplicationUserBlogs.Contains(applicationUserBlog)) throw new Exception("Already subscribed");
                 Blog blog = _context.Blogs.First(x => x.BlogId == id);
-                user.Subscriptions.Add(blog);
+                await _context.AddAsync(new ApplicationUserBlog
+                {
+                    ApplicationUser = user,
+                    Blog = blog
+                });
+                
                 await _context.SaveChangesAsync();
             }
             catch (Exception e)

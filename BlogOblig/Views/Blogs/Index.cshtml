@@ -31,30 +31,45 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.UserName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BlogId">Edit</a> |
-                <a asp-action="RedirectToBlog" asp-route-id="@item.BlogId">Vis blogg</a> |
-                <a asp-action="Delete" asp-route-id="@item.BlogId">Delete</a>
-                
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modified)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner.UserName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BlogId">Edit</a> |
+                    <a asp-action="RedirectToBlog" asp-route-id="@item.BlogId">Vis blogg</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BlogId">Delete</a>
+                    <input id="subscribeBtn" type="button" onclick="subscribe(@item.BlogId)" value="Subscribe"/>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    function subscribe(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/Blogs/Subscribe/' + id,
+            success: function() {
+                alert("success");
+            }
+        });
+    }
+</script>

@@ -8,6 +8,6 @@ namespace BlogOblig.Models.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public virtual List<Blog> Subscriptions { get; set; }
+        public ICollection<ApplicationUserBlog> ApplicationUserBlogs { get; set; }
     }
 }
