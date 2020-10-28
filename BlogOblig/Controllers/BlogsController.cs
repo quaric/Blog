@@ -193,5 +193,11 @@ namespace BlogOblig.Controllers
         {
             await _repository.Subscribe(User, id);
         }
+
+        [HttpPost]
+        public async Task Unsubscribe(int id)
+        {
+            await _repository.Unsubscribe(User, id);
+        }
     }
 }

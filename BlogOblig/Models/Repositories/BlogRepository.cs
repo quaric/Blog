@@ -143,7 +143,7 @@ namespace BlogOblig.Models
                 ApplicationUserBlog applicationUserBlog = _context.ApplicationUserBlogs.FirstOrDefault(x => x.BlogId == id);
                 if (user.ApplicationUserBlogs.Contains(applicationUserBlog)) throw new Exception("Already subscribed");
                 Blog blog = _context.Blogs.First(x => x.BlogId == id);
-                await _context.AddAsync(new ApplicationUserBlog
+                await _context.ApplicationUserBlogs.AddAsync(new ApplicationUserBlog
                 {
                     ApplicationUser = user,
                     Blog = blog
@@ -158,6 +158,22 @@ namespace BlogOblig.Models
  
         }
 
+        public async Task Unsubscribe(IPrincipal principal, int id)
+        {
+            try
+            {
+                ApplicationUser user = _context.ApplicationUsers.Include(x => x.ApplicationUserBlogs).First(x => x.UserName == principal.Identity.Name);
+                ApplicationUserBlog applicationUserBlog = _context.ApplicationUserBlogs.FirstOrDefault(x => x.BlogId == id);
+                if (!user.ApplicationUserBlogs.Contains(applicationUserBlog)) throw new Exception("Not subscribed");
+                _context.ApplicationUserBlogs.Remove(applicationUserBlog);
+
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Invalid id or user: " + e.ToString());
+            }
+        }
 
 
 

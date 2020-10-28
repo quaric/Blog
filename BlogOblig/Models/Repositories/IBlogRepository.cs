@@ -21,5 +21,7 @@ namespace BlogOblig.Models
         public BlogEditViewModel GetBlogEditViewModel(int id);
 
         public Task Subscribe(IPrincipal principal, int id);
+        public Task Unsubscribe(IPrincipal principal, int id);
+
     }
 }

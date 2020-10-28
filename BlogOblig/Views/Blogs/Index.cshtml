@@ -1,4 +1,7 @@
-﻿@model IEnumerable<BlogOblig.Models.Entities.Blog>
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using System.Security.Cryptography.X509Certificates
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<BlogOblig.Models.Entities.Blog>
 
 @{
     ViewData["Title"] = "Index";
@@ -53,7 +56,8 @@
                     <a asp-action="Edit" asp-route-id="@item.BlogId">Edit</a> |
                     <a asp-action="RedirectToBlog" asp-route-id="@item.BlogId">Vis blogg</a> |
                     <a asp-action="Delete" asp-route-id="@item.BlogId">Delete</a>
-                    <input id="subscribeBtn" type="button" onclick="subscribe(@item.BlogId)" value="Subscribe"/>
+                    <input id="subscribeBtn" type="button" onclick="subscribe(@item.BlogId)" value="Subscribe" />
+                    <input id="unsubscribeBtn" type="button" onclick="unsubscribe(@item.BlogId)" value="Unsubscribe" />
                 </td>
             </tr>
         }
@@ -67,6 +71,16 @@
         $.ajax({
             type: 'POST',
             url: '/Blogs/Subscribe/' + id,
+            success: function() {
+                alert("success");
+            }
+        });
+    }
+
+    function unsubscribe(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/Blogs/Unsubscribe/' + id,
             success: function() {
                 alert("success");
             }
