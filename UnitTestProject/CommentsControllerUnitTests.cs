@@ -77,7 +77,7 @@ namespace UnitTestProject
         public async Task IndexShouldShowAllComments()
         {
             //arrange
-            _mockRepository.Setup(x => x.GetAll(1)).Returns(_fakeComments);
+            _mockRepository.Setup(x => x.GetAll(1)).ReturnsAsync(_fakeComments);
             var controller = new CommentsController(_mockRepository.Object, _mockUserManager.Object);
             //Act
             var result = await controller.Index(1) as ViewResult;

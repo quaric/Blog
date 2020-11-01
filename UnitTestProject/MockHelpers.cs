@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace UnitTestProject
 {
@@ -19,6 +22,18 @@ namespace UnitTestProject
             var mgr = new Mock<UserManager<TUser>>(store.Object, null, null, null, null, null, null, null, null);
             mgr.Object.UserValidators.Add(new UserValidator<TUser>());
             mgr.Object.PasswordValidators.Add(new PasswordValidator<TUser>());
+            return mgr;
+        }
+
+        public static Mock<SignInManager<TUser>> MockSignInManager<TUser>(UserManager<TUser> usrMgr) where TUser : class
+        {
+            var mgr = new Mock<SignInManager<TUser>>(usrMgr,
+                new Mock<IHttpContextAccessor>().Object,
+                new Mock<IUserClaimsPrincipalFactory<TUser>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<ILogger<SignInManager<TUser>>>().Object,
+                new Mock<IAuthenticationSchemeProvider>().Object,
+                null);
             return mgr;
         }
 

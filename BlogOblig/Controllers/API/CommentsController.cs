@@ -73,7 +73,6 @@ namespace BlogOblig.Controllers.API
                 Text = comment.Text,
                 ParentPostId = id
             };
-            //TODO LEGG TIL fail på add
             await _repository.Add(User, newViewModel);
             await _hubContext.Clients.All.SendAsync("ReceiveComment", comment);
             return Ok("Kommentaren har blitt lagt til!");

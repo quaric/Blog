@@ -9,7 +9,9 @@ using BlogOblig.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-
+/*
+ * Author: kc
+ */
 namespace BlogOblig.Models.Repositories
 {
     public class AccountsRepository : IAccountsRepository
@@ -45,11 +47,6 @@ namespace BlogOblig.Models.Repositories
             return new User() { Id = thisUser.Id, Username = user.Username };
         }
 
-        /// <summary>
-        /// Generates a token for a user
-        /// </summary>
-        /// <param name="user">User token will be generated for</param>
-        /// <returns>Jwt token string</returns>
         public string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
