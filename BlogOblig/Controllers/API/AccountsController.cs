@@ -20,6 +20,19 @@ namespace BlogOblig.Controllers.API
             _repo = repo;
         }
 
+
+        /// <summary>
+        ///     Logger inn bruker ved korrekt brukernavn og passord
+        /// </summary>
+        /// <example>
+        ///     POST:
+        ///     {
+        ///         "username": "admin@admin.com"
+        ///         "passwd": "123@Lolol"
+        ///     }
+        /// </example>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [Route("verifyLogin")]

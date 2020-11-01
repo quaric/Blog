@@ -26,12 +26,40 @@ namespace BlogOblig.Controllers.API
             _repository = repository;
             _hubContext = hubContext;
         }
+
+        /// <summary>
+        ///     Returnerer alle kommentarer til en gitt Post. PostId(int) må inkluderes i request.
+        /// </summary>
+        /// <example>
+        /// Eksempel request:
+        ///     GET
+        ///      {
+        ///         "id": 1
+        ///      }
+        /// </example>
+        /// <param name="id">Parent Post Id</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetComments([FromRoute] int id)
         {
             return Ok(await _repository.GetAll(id));
         }
 
+
+        /// <summary>
+        ///      Legger til en kommentar.
+        /// </summary>
+        /// <example>
+        ///Eksempel Request:
+        ///     POST:
+        ///     {
+        ///        "name": "tittel"
+        ///        "Text": "kommentartekst"
+        ///     }
+        /// </example>
+        /// <param name="comment"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost("{id}")]
         public async Task<IActionResult> SendComment([FromBody] Comment comment, [FromRoute] int id)
         {
@@ -41,6 +69,7 @@ namespace BlogOblig.Controllers.API
                 Text = comment.Text,
                 ParentPostId = id
             };
+            //TODO LEGG TIL fail på add
             await _repository.Add(User, newViewModel);
             await _hubContext.Clients.All.SendAsync("ReceiveComment", comment);
             return Ok();

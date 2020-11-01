@@ -9,6 +9,7 @@ namespace BlogOblig.Hubs
 {
     public class CommentsHub : Hub
     {
+        //Brukes ikke nå, men kan brukes til å sende oppdatering til alle klienter
         public async Task BroadcastComment(Comment comment)
         {
 
