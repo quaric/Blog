@@ -47,7 +47,7 @@ namespace BlogOblig.Controllers.API
 
             if (res == null)
             {
-                return Ok(new {res = "Brukernavn/Passord er feil"}); 
+                return Unauthorized(new {res = "Brukernavn/Passord er feil"}); 
             }
 
             return Ok(new { token = _repo.GenerateJwtToken(res)});
