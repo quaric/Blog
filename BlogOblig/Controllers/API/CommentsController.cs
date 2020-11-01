@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogOblig.Hubs;
 using BlogOblig.Models;
 using BlogOblig.Models.Entities;
 using BlogOblig.Models.ViewModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace BlogOblig.Controllers.API
 {
@@ -17,10 +19,12 @@ namespace BlogOblig.Controllers.API
     public class CommentsController : Controller
     {
         private ICommentRepository _repository;
+        private IHubContext<CommentsHub> _hubContext;
 
-        public CommentsController(ICommentRepository repository)
+        public CommentsController(ICommentRepository repository, IHubContext<CommentsHub> hubContext)
         {
             _repository = repository;
+            _hubContext = hubContext;
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetComments([FromRoute] int id)
@@ -38,6 +42,7 @@ namespace BlogOblig.Controllers.API
                 ParentPostId = id
             };
             await _repository.Add(User, newViewModel);
+            await _hubContext.Clients.All.SendAsync("ReceiveComment", comment);
             return Ok();
 
         }

@@ -48,6 +48,9 @@
             return localStorage.getItem("token") !== null;
         }
 
+
+
+
         $(function() {
             $('#btnSubmit').click(function() {
                 $.ajax({
@@ -61,8 +64,11 @@
                     dataType: "json",
                     type: "POST",
                     contentType: "application/json;charset=utf-8"
+                }).success(function () {
+                    alert("hei");
                 });
 
             });
         });
+
     </script>

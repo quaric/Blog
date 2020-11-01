@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using BlogOblig.Data;
+using BlogOblig.Hubs;
 using BlogOblig.Models;
 using BlogOblig.Models.Entities;
 using BlogOblig.Models.Repositories;
@@ -35,8 +36,8 @@ namespace BlogOblig
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
 
+            services.AddSignalR();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -121,6 +122,7 @@ namespace BlogOblig
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<CommentsHub>("/commentshub");
             });
         }
     }

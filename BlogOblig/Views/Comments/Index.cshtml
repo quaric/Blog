@@ -25,6 +25,8 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
 <script type="text/javascript">
 
     function getSavedToken() {
@@ -56,13 +58,20 @@
                 url: "/api/Comments/" + @Context.GetRouteData().Values["id"],
                 data: {},
                 type: "GET",
-                contentType: "application/json;charset=utf-8",
+                contentType: "application/json;charset=utf-8"
             }).then(function(comments) {
                 callback(comments);
             });
         }
     }
+    var connection = new signalR.HubConnectionBuilder().withUrl("/commentshub").build();
 
+    connection.on("ReceiveComment", function (comment) {
+        update();
+    });
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
 
     $(document).ready(function() {
 
