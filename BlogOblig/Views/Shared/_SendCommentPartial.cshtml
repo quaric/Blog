@@ -25,14 +25,14 @@
             <!--Modal Footer Start-->
             <div class="modal-footer">
                 <button data-dismiss="modal" id="cancel" class="btn btn-danger" type="button">Cancel</button>
-                <input type="button" button id="btnSubmit" class="btn btn-primary" value="Login"/>
+                <input data-success="modal" type="button" button id="btnSubmit" class="btn btn-primary" value="Login"/>
             </div>
             <!--Modal Footer End-->
         </div>
         <!--Modal Body End-->
     </div>
 </div>
-@section Scripts {
+
     <partial name="_ValidationScriptsPartial"/>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -50,7 +50,6 @@
 
         $(function() {
             $('#btnSubmit').click(function() {
-                alert("Hei");
                 $.ajax({
                     beforeSend: function(xhr) {
                         if (isUserLoggedIn()) {
@@ -67,4 +66,3 @@
             });
         });
     </script>
-}

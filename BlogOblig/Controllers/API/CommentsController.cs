@@ -29,7 +29,7 @@ namespace BlogOblig.Controllers.API
         }
 
         [HttpPost("{id}")]
-        public async Task<IActionResult> SendComment([FromQuery] Comment comment, [FromRoute] int id)
+        public async Task<IActionResult> SendComment([FromBody] Comment comment, [FromRoute] int id)
         {
             var newViewModel = new CommentsEditViewModel
             {
