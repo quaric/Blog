@@ -10,7 +10,7 @@ namespace BlogOblig.Models
 {
     public interface ICommentRepository
     {
-        public IEnumerable<Comment> GetAll(int? id);
+        public Task<IEnumerable<Comment>> GetAll(int? id);
         public Comment Get(int? id);
         public CommentsEditViewModel GetViewModel(int id);
         public Task Add(IPrincipal p, CommentsEditViewModel viewModel);

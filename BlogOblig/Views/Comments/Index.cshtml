@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Routing
-@model IEnumerable<BlogOblig.Models.Entities.Comment>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,57 +6,68 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create" asp-route-id="@Context.GetRouteData().Values["id"]">Create New</a>
-</p>
+<a class="btn btn-primary popup" data-url="Comments/Create" data-toggle="modal" data-target="#modal-create-comment" id="Comments">Add New Comment <i class="fa fa-plus"></i></a>
+<partial name="_SendCommentPartial" />
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Text)
+                Beskrivelse
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner.UserName)
-            </th>
-            <th></th>
         </tr>
     </thead>
-    <tbody>
-@if (@Model != null)
-{
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.UserName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
-            </td>
-        </tr>
-}
-
-}
+    <tbody id="comments">
     </tbody>
 </table>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript">
+
+    function getSavedToken() {
+        var jsontoken = jQuery.parseJSON(localStorage.getItem("token"));
+        return jsontoken.token;
+    }
+    function isUserLoggedIn(){
+        return localStorage.getItem("token") !== null;
+    }
+    function update() {
+        listcomments(function(comments) {
+            var strcomments = "";
+            $.each(comments,
+                function(index, comment) {
+                    strcomments += "<tr><td>" + comment.name + "</td>" + "<td>" + comment.text + "</td></tr>";
+                });
+            $("#comments").html(strcomments);
+
+        });
+
+
+        function listcomments(callback) {
+            $.ajax({
+                beforeSend: function(xhr) {
+                    if (isUserLoggedIn()) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + getSavedToken());
+                    }
+                },
+                url: "/api/Comments/" + @Context.GetRouteData().Values["id"],
+                data: {},
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+            }).then(function(comments) {
+                callback(comments);
+            });
+        }
+    }
+
+
+    $(document).ready(function() {
+
+        $("#comments").html("<p>Venter på data fra server" + "</p>");
+
+        update();
+    });
+</script>

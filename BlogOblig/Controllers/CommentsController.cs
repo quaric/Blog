@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BlogOblig.Controllers
 {
+
     public class CommentsController : Controller
     {
         private ICommentRepository _repository;
@@ -32,7 +33,7 @@ namespace BlogOblig.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(int? id)
         {
-            IEnumerable<Comment> comments = _repository.GetAll(id) as IEnumerable<Comment>;
+            IEnumerable<Comment> comments = await _repository.GetAll(id) as IEnumerable<Comment>;
             return View(comments);
         }
 

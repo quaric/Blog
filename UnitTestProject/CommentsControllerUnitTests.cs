@@ -27,7 +27,7 @@ namespace UnitTestProject
 
         private Mock<ICommentRepository> _mockRepository;
         private Mock<UserManager<ApplicationUser>> _mockUserManager;
-        private List<Comment> _fakeComments;
+        private ICollection<Comment> _fakeComments;
         private CommentsEditViewModel _viewModel;
         private BlogEditViewModel _fakeBlog;
 

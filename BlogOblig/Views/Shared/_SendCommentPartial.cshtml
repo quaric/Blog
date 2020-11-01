@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Routing
+<!--Modal-->
+<div aria-hidden="true" aria-labelledby="modal-create-edit-user-label" role="dialog" tabindex="-1" id="modal-create-comment" class="modal fade">
+    <div class="modal-dialog">
+        <!--Modal Body Start-->
+
+        <div class="modal-content">
+
+            <!--Modal Header Start-->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Comment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <!--Modal Header End-->
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label for="Title">Title</label>
+                <input type="Text" id="name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Text">Text</label>
+                <input type="Text" id="text" class="form-control" />
+            </div>
+            <!--Modal Footer Start-->
+            <div class="modal-footer">
+                <button data-dismiss="modal" id="cancel" class="btn btn-danger" type="button">Cancel</button>
+                <input type="button" button id="btnSubmit" class="btn btn-primary" value="Login"/>
+            </div>
+            <!--Modal Footer End-->
+        </div>
+        <!--Modal Body End-->
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+
+        function getSavedToken() {
+            var jsontoken = jQuery.parseJSON(localStorage.getItem("token"));
+            return jsontoken.token;
+        }
+
+        function isUserLoggedIn() {
+            return localStorage.getItem("token") !== null;
+        }
+
+        $(function() {
+            $('#btnSubmit').click(function() {
+                alert("Hei");
+                $.ajax({
+                    beforeSend: function(xhr) {
+                        if (isUserLoggedIn()) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + getSavedToken());
+                        }
+                    },
+                    url: "/api/Comments/" + @Context.GetRouteData().Values["id"],
+                    data: JSON.stringify({ name: $('#name').val(), text: $('#text').val() }),
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8"
+                });
+
+            });
+        });
+    </script>
+}

@@ -23,11 +23,11 @@ namespace BlogOblig.Models
             _userManager = userManager;
         }
 
-        public IEnumerable<Comment> GetAll(int? id)
+        public async Task<IEnumerable<Comment>> GetAll(int? id)
         {
             if (id != null)
             {
-                return _context.Comments.Include(x=>x.Owner).Where(x => x.ParentPost.PostId == id).ToList();
+                return await _context.Comments.Include(x=>x.Owner).Where(x => x.ParentPost.PostId == id).ToListAsync();
             }
 
             return null;
@@ -80,6 +80,7 @@ namespace BlogOblig.Models
             await _context.SaveChangesAsync();
         }
 
+        
         public void Update(CommentsEditViewModel viewModel)
         {
             try

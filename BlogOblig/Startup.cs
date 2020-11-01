@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using BlogOblig.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -12,10 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using BlogOblig.Data;
 using BlogOblig.Models;
 using BlogOblig.Models.Entities;
+using BlogOblig.Models.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlogOblig
 {
@@ -38,6 +42,7 @@ namespace BlogOblig
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
+                .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -47,9 +52,32 @@ namespace BlogOblig
                     .RequireAuthenticatedUser()
                     .Build();
             });
+
+            var confKey = Configuration.GetSection("TokenSettings")["SecretKey"];
+            var key = Encoding.ASCII.GetBytes(confKey);
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication()
+                // Enable Cookie authentication
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                //Enables jwt bearer tokens
+                .AddJwtBearer(x =>
+                {
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true
+                    };
+
+                });
+  
             services.AddTransient<IBlogRepository, BlogRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<IAccountsRepository, AccountsRepository>();
+
             // Authorization handlers.
             services.AddScoped<IAuthorizationHandler,
                 BloggerIsOwnerAuthorizationHandler>();

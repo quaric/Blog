@@ -1,4 +1,6 @@
-﻿@model IEnumerable<BlogOblig.Models.ViewModel.SubscriptionViewModel>
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.IdentityModel.JsonWebTokens
+@model IEnumerable<BlogOblig.Models.ViewModel.SubscriptionViewModel>
 
 @{
     ViewData["Title"] = "My Subscriptions";
@@ -60,3 +62,4 @@
         </tbody>
     </table>
 }
+

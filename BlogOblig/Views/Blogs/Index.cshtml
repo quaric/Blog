@@ -56,7 +56,7 @@
                     <a asp-action="Edit" asp-route-id="@item.BlogId">Edit</a> |
                     <a asp-action="RedirectToBlog" asp-route-id="@item.BlogId">Vis blogg</a> |
                     <a asp-action="Delete" asp-route-id="@item.BlogId">Delete</a>
-                    <input id="subscribeBtn" type="button" onclick="subscribe(@item.BlogId)" value="Subscribe" />
+                    <input id="subscribeBtn" type="button" onclick="subscribe(@item.BlogId)" value="Subscribe" /> 
                     <input id="unsubscribeBtn" type="button" onclick="unsubscribe(@item.BlogId)" value="Unsubscribe" />
                 </td>
             </tr>
