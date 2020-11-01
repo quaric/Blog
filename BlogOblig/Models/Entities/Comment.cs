@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -20,11 +21,13 @@ namespace BlogOblig.Models.Entities
         /// Navn(Tittel) på kommentaren
         /// </summary>
         /// <example>"En fin dag"</example>
+        [Required]
         public string Name { get; set; }
         /// <summary>
         /// Tekstinnhold i kommentaren
         /// </summary>
         /// <example>"lorem ipsum"</example>
+        [Required]
         public string Text { get; set; }
         /// <summary>
         /// Foreldre Post som kommentaren hører til

@@ -9,6 +9,13 @@
         "dist/browser/signalr.js",
         "dist/browser/signalr.min.js"
       ]
+    },
+    {
+      "library": "sweetalert@latest",
+      "destination": "wwwroot/lib/sweetalert/",
+      "files": [
+        "dist/sweetalert.min.js"
+      ]
     }
   ]
 }

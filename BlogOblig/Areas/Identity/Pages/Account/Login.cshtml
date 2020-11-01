@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="button" button id="btnLogin" class="btn btn-primary" value="Login"/>
+                    <input type="button" button id="btnLogin" class="btn btn-primary" value="Login" />
                 </div>
                 <div class="form-group">
                     <p>
@@ -78,20 +78,21 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/sweetalert/dist/sweetalert.min.js"></script>
+
     <script>
-        $(function() {
-            $('#btnLogin').click(function() {
+        $(function () {
+            $('#btnLogin').click(function () {
                 $.ajax({
-                        url: "/api/Accounts/verifyLogin/",
-                        type: "POST",
-                        data: JSON.stringify({ username: $('#email').val(), passwd: $('#password').val() }),
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8"
-                    })
-                    .done(function(token) {
+                    url: "/api/Accounts/verifyLogin/",
+                    type: "POST",
+                    data: JSON.stringify({ username: $('#email').val(), passwd: $('#password').val() }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                })
+                    .done(function (token) {
                         localStorage.setItem("token", JSON.stringify(token));
-                        alert("Sign in successfull..redirecting");
                         window.location = "/Home/";
 
                     });

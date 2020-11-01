@@ -63,6 +63,10 @@ namespace BlogOblig.Controllers.API
         [HttpPost("{id}")]
         public async Task<IActionResult> SendComment([FromBody] Comment comment, [FromRoute] int id)
         {
+            if (comment == null)
+            {
+                return BadRequest("Kommentaren er tom, ikke lagt til");
+            }
             var newViewModel = new CommentsEditViewModel
             {
                 Name = comment.Name,
@@ -72,7 +76,7 @@ namespace BlogOblig.Controllers.API
             //TODO LEGG TIL fail på add
             await _repository.Add(User, newViewModel);
             await _hubContext.Clients.All.SendAsync("ReceiveComment", comment);
-            return Ok();
+            return Ok("Kommentaren har blitt lagt til!");
 
         }
     }

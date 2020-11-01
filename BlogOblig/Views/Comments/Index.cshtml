@@ -27,6 +27,7 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
+<script src="~/lib/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
     function getSavedToken() {
@@ -53,6 +54,8 @@
                 beforeSend: function(xhr) {
                     if (isUserLoggedIn()) {
                         xhr.setRequestHeader('Authorization', 'Bearer ' + getSavedToken());
+                    } else {
+                         swal("JWT Token er expired", "error");
                     }
                 },
                 url: "/api/Comments/" + @Context.GetRouteData().Values["id"],
